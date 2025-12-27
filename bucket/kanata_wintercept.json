@@ -16,38 +16,28 @@
         }
     },
     "bin": "kanata_windows_gui_wintercept_x64.exe",
-    "persist": "kanata_wintercept",
+    "shortcuts": [
+        [
+            "kanata_windows_gui_wintercept_x64.exe",
+            "Kanata Wintercept"
+        ]
+    ],
+    "persist": ".",
     "post_install": [
-        "# Scoop auto-extracts all zip files, so Interception folder already exists",
-        "$dllSource = Join-Path $dir 'Interception\\library\\x64\\interception.dll'",
-        "$dllDest = Join-Path $dir 'interception.dll'",
+        "# Copy interception.dll from auto-extracted Interception folder",
+        "Copy-Item \"$dir\\Interception\\library\\x64\\interception.dll\" \"$dir\\interception.dll\" -Force -ErrorAction SilentlyContinue",
         "",
-        "# Copy interception.dll to app directory",
-        "if (Test-Path $dllSource) {",
-        "    Copy-Item -Path $dllSource -Destination $dllDest -Force",
-        "    Write-Host 'Dependency: interception.dll extracted successfully' -ForegroundColor Green",
-        "} else {",
-        "    Write-Host 'Warning: interception.dll not found' -ForegroundColor Yellow",
-        "}",
-        "",
-        "# Remove other executables, keep only GUI wintercept version",
-        "Get-ChildItem -Path $dir -Filter '*.exe' | Where-Object { $_.Name -ne 'kanata_windows_gui_wintercept_x64.exe' } | Remove-Item -Force",
-        "",
-        "# Clean up Interception folder",
-        "Remove-Item -Path (Join-Path $dir 'Interception') -Recurse -Force -ErrorAction SilentlyContinue",
-        "",
-        "# Create persist directory if it doesn't exist",
-        "if (!(Test-Path \"$persist_dir\")) {",
-        "    New-Item -ItemType Directory -Path \"$persist_dir\" | Out-Null",
-        "}",
+        "# Remove unnecessary files",
+        "Remove-Item \"$dir\\*.exe\" -Exclude 'kanata_windows_gui_wintercept_x64.exe' -Force",
+        "Remove-Item \"$dir\\*.dll\" -Exclude 'interception.dll' -Force",
+        "Remove-Item \"$dir\\Interception\" -Recurse -Force -ErrorAction SilentlyContinue",
         "",
         "Write-Host 'Kanata wintercept GUI installation completed!' -ForegroundColor Green",
         "Write-Host 'Executable: kanata_windows_gui_wintercept_x64.exe' -ForegroundColor Green",
         "Write-Host '' ",
         "Write-Host 'Configuration files location:' -ForegroundColor Cyan",
         "Write-Host \"  $persist_dir\" -ForegroundColor Cyan",
-        "Write-Host '' ",
-        "Write-Host 'Place your kanata.kbd and other config files in the above directory.' -ForegroundColor Yellow"
+        "Write-Host 'Place your kanata.kbd in the above directory.' -ForegroundColor Yellow"
     ],
     "checkver": {
         "github": "https://github.com/jtroo/kanata"
