@@ -1,0 +1,64 @@
+{
+    "version": "1.10.1",
+    "description": "A cross-platform software keyboard remapper for Windows/Linux/macOS",
+    "homepage": "https://github.com/jtroo/kanata",
+    "license": "LGPL-3.0-only",
+    "architecture": {
+        "64bit": {
+            "url": [
+                "https://github.com/jtroo/kanata/releases/download/v1.10.1/kanata-windows-binaries-x64-v1.10.1.zip",
+                "https://github.com/jtroo/kanata/raw/refs/heads/main/assets/Interception.zip"
+            ],
+            "hash": [
+                "7c2fad2264d39245441a7e232d2dc6eb09004f475fb926576ab5cea880f9dcc7",
+                "ad038963d6413055765128b0b931f6e765147c9916dba79e65d872b261f9af10"
+            ]
+        }
+    },
+    "bin": "kanata_windows_gui_wintercept_x64.exe",
+    "persist": "kanata_wintercept",
+    "post_install": [
+        "# Extract interception.dll from Interception.zip",
+        "$interceptionZip = Join-Path $dir 'Interception.zip'",
+        "$tempExtract = Join-Path $dir 'temp_interception'",
+        "",
+        "# Expand Interception.zip",
+        "Expand-Archive -Path $interceptionZip -DestinationPath $tempExtract -Force",
+        "",
+        "# Copy interception.dll to app directory",
+        "$dllSource = Join-Path $tempExtract 'Interception\\library\\x64\\interception.dll'",
+        "$dllDest = Join-Path $dir 'interception.dll'",
+        "Copy-Item -Path $dllSource -Destination $dllDest -Force",
+        "",
+        "# Remove other executables, keep only GUI wintercept version",
+        "Get-ChildItem -Path $dir -Filter '*.exe' | Where-Object { $_.Name -ne 'kanata_windows_gui_wintercept_x64.exe' } | Remove-Item -Force",
+        "",
+        "# Clean up temporary files",
+        "Remove-Item -Path $tempExtract -Recurse -Force",
+        "Remove-Item -Path $interceptionZip -Force",
+        "",
+        "# Create persist directory if it doesn't exist",
+        "if (!(Test-Path \"$persist_dir\")) {",
+        "    New-Item -ItemType Directory -Path \"$persist_dir\" | Out-Null",
+        "}",
+        "",
+        "Write-Host 'Kanata wintercept GUI installation completed!' -ForegroundColor Green",
+        "Write-Host 'Executable: kanata_windows_gui_wintercept_x64.exe' -ForegroundColor Green",
+        "Write-Host 'Dependency: interception.dll extracted successfully' -ForegroundColor Green",
+        "Write-Host '' ",
+        "Write-Host 'Configuration files location:' -ForegroundColor Cyan",
+        "Write-Host \"  $persist_dir\" -ForegroundColor Cyan",
+        "Write-Host '' ",
+        "Write-Host 'Place your kanata.kbd and other config files in the above directory.' -ForegroundColor Yellow"
+    ],
+    "checkver": {
+        "github": "https://github.com/jtroo/kanata"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/jtroo/kanata/releases/download/v$version/kanata-windows-binaries-x64-v$version.zip"
+            }
+        }
+    }
+}
