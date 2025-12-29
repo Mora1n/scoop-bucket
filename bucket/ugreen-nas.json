@@ -8,9 +8,7 @@
     "Requires Windows 10 or later (64-bit)"
   ],
   "url": "https://api-zh.ugnas.com/api/system/v1/ua/temp/link?appType=client&id=413#/dl.json",
-  "hash": {
-    "mode": "download"
-  },
+  "hash": "skip",
   "pre_install": [
     "# Get dynamic download URL from API",
     "$jsonFile = \"$dir\\dl.json\"",
@@ -51,8 +49,6 @@
   },
   "autoupdate": {
     "url": "https://api-zh.ugnas.com/api/system/v1/ua/temp/link?appType=client&id=$match2#/dl.json",
-    "hash": {
-      "mode": "download"
-    }
+    "hash": "skip"
   }
 }
