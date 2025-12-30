@@ -15,7 +15,6 @@
       "    FilePath = \"$dir\\setup.exe\"",
       "    ArgumentList = @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', \"/DIR=$dir\\app\")",
       "    Wait = $true",
-      "    Verb = 'RunAs'",
       "}",
       "Start-Process @processArgs"
     ],
@@ -27,7 +26,6 @@
       "    FilePath = \"$dir\\app\\unins000.exe\"",
       "    ArgumentList = @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART')",
       "    Wait = $true",
-      "    Verb = 'RunAs'",
       "}",
       "Start-Process @processArgs"
     ]
