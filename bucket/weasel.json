@@ -24,6 +24,7 @@
     ],
     "keep": true
   },
+  "require_admin": true,
   "uninstaller": {
     "file": "app\\unins000.exe",
     "args": [
