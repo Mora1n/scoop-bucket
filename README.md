@@ -78,10 +78,10 @@ scoop update <app-name>
 ## Repository Structure
 
 ```
-scoop-bucket/
+scoop-morain/
 ├── bucket/
-│   ├── weasel.json
-│   └── kanata_wintercept.json
+│   ├── kanata_wintercept.json
+│   └── weasel.json
 ├── README.md
 └── LICENSE
 ```
